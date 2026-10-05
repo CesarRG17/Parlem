@@ -1,0 +1,8 @@
+flask
+flask-cors
+google-genai
+python-docx
+python-pptx
+pdfplumber
+reportlab
+gunicorn
