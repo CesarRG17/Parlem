@@ -79,9 +79,12 @@ textarea:focus{outline:none;border-color:var(--blue)}
 
 <script>
 (function () {
-  // En local el backend corre en el puerto 5000 de la misma máquina.
-  // Al subirlo a internet, cambia esto por la URL pública del backend.
-  const BACKEND_URL = `http://${location.hostname || 'localhost'}:5000`;
+  // URL pública del backend (PythonAnywhere). CAMBIA "TUUSUARIO" por tu usuario.
+  const PRODUCTION_BACKEND = "https://TUUSUARIO.pythonanywhere.com";
+  // En local (localhost / red wifi) usa el backend de tu PC; en internet, el público.
+  const isLocal = !location.hostname || location.hostname === 'localhost' ||
+                  location.hostname === '127.0.0.1' || location.hostname.startsWith('192.168.');
+  const BACKEND_URL = isLocal ? `http://${location.hostname || 'localhost'}:5000` : PRODUCTION_BACKEND;
 
   const $ = (id) => document.getElementById(id);
   const chat = $('chat'), input = $('input'), sendBtn = $('send'), dir = $('dir'), file = $('file'), dz = $('dz');

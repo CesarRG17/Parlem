@@ -41,7 +41,11 @@ log = logging.getLogger("parlem-backend")
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20 MB por archivo
-CORS(app)
+# En local queda abierto (*). En producción define ALLOWED_ORIGINS con la URL
+# de tu web (p. ej. https://usuario.github.io) para que nadie más pueda
+# usar tu backend y gastar tu cuota gratuita de la IA.
+_origins = os.environ.get("ALLOWED_ORIGINS", "*")
+CORS(app, origins="*" if _origins == "*" else [o.strip() for o in _origins.split(",")])
 
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")
 client = genai.Client()  # lee GEMINI_API_KEY del entorno
