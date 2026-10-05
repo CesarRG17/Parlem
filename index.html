@@ -79,12 +79,12 @@ textarea:focus{outline:none;border-color:var(--blue)}
 
 <script>
 (function () {
-  // URL pública del backend (PythonAnywhere). CAMBIA "TUUSUARIO" por tu usuario.
-  const PRODUCTION_BACKEND = "https://TUUSUARIO.pythonanywhere.com";
-  // En local (localhost / red wifi) usa el backend de tu PC; en internet, el público.
-  const isLocal = !location.hostname || location.hostname === 'localhost' ||
-                  location.hostname === '127.0.0.1' || location.hostname.startsWith('192.168.');
-  const BACKEND_URL = isLocal ? `http://${location.hostname || 'localhost'}:5000` : PRODUCTION_BACKEND;
+  // Si abres la página con otro servidor local (p. ej. python -m http.server 8000),
+  // el backend está en el puerto 5000. En cualquier otro caso (Vercel, o http://localhost:5000)
+  // la página y el backend comparten dirección, así que se usan rutas relativas.
+  const h = location.hostname;
+  const isLocalStatic = (!h || h === 'localhost' || h === '127.0.0.1' || h.startsWith('192.168.')) && location.port !== '5000';
+  const BACKEND_URL = isLocalStatic ? `http://${h || 'localhost'}:5000` : '';
 
   const $ = (id) => document.getElementById(id);
   const chat = $('chat'), input = $('input'), sendBtn = $('send'), dir = $('dir'), file = $('file'), dz = $('dz');
@@ -168,7 +168,12 @@ textarea:focus{outline:none;border-color:var(--blue)}
   });
   file.addEventListener('change', () => { if (file.files.length) handleFile(file.files[0]); file.value = ''; });
 
+  const MAX_MB = 4; // límite de subida del hosting gratuito (~4,5 MB)
+
   function handleFile(f) {
+    if (f.size > MAX_MB * 1024 * 1024) {
+      return bubble(`<em>El archivo pesa más de ${MAX_MB} MB. Prueba con uno más pequeño o divídelo.</em>`, 'bot');
+    }
     if (mode === 'image') {
       if (!f.type.startsWith('image/')) return bubble('<em>Eso no parece una imagen.</em>', 'bot');
       const reader = new FileReader();

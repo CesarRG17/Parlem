@@ -216,6 +216,15 @@ def translate_batch(items, direccion="auto"):
 # Healthcheck
 # ---------------------------------------------------------------------------
 @app.route("/", methods=["GET"])
+def home():
+    """Sirve la página web (index.html), así front y backend viven juntos."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
+    if os.path.exists(path):
+        return send_file(path)
+    return jsonify(status="ok", servicio="Parlem backend", aviso="No se encontró index.html")
+
+
+@app.route("/salud", methods=["GET"])
 def healthcheck():
     return jsonify(status="ok", servicio="Parlem backend", modelo=MODEL)
 
