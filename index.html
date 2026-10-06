@@ -3,24 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SargantANNA — Traductor Valencià · Español</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗣️</text></svg>">
+<title>SargantAnna — Traductor Valencià · Español</title>
+<link rel="icon" type="image/png" href="/icon.png">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="theme-color" content="#2b4512">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#24211c;--soft:#56503f;--paper:#fbf8f2;--panel:#fff;--line:#e3dcc9;--blue:#1f5c73;--blue-d:#163f4f;--blue-t:#eaf2f3;--az-t:#fbf0dd;--r:18px}
+:root{--ink:#1f2914;--soft:#58613f;--paper:#f7f9ee;--panel:#fff;--line:#d8dfc0;--blue:#3f6b1a;--blue-d:#2b4512;--blue-t:#eaf1d9;--az-t:#f3f7cf;--lime:#a6c51a;--r:18px}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{font-family:'Work Sans',system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 1px 1px,rgba(31,92,115,.07) 1.5px,transparent 0) 0 0/22px 22px,var(--paper);display:flex;justify-content:center}
+body{font-family:'Work Sans',system-ui,sans-serif;color:var(--ink);background:var(--paper);display:flex;justify-content:center}
 .app{width:100%;max-width:640px;height:100dvh;display:flex;flex-direction:column;background:var(--panel);border:0 solid var(--line);border-width:0 1px}
-header{padding:18px 20px 16px;border-bottom:3px solid var(--blue);flex-shrink:0}
+header{padding:18px 20px 16px;border-bottom:3px solid var(--lime);text-align:center;flex-shrink:0}
 h1{font-family:'Fraunces',serif;font-weight:600;font-size:28px;margin:0;color:var(--blue-d)}
-.tagline{margin:4px 0 0;font-size:13.5px;color:var(--soft)}
+.logo{display:block;width:min(100%,340px);height:auto;margin:0 auto;mix-blend-mode:multiply}
+.tagline{margin:6px 0 0;font-size:13.5px;color:var(--soft)}
 select{margin-top:12px;width:100%;font:500 13.5px 'Work Sans',sans-serif;color:var(--blue-d);background:var(--blue-t);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-.chat{flex:1;overflow-y:auto;padding:20px 18px 8px;display:flex;flex-direction:column;gap:14px}
+.chat{background:url('/hojas.svg') 0 0/320px 320px,#fcfdf7;flex:1;overflow-y:auto;padding:20px 18px 8px;display:flex;flex-direction:column;gap:14px}
 .row{display:flex}.row.user{justify-content:flex-end}
 .bubble{max-width:84%;padding:11px 14px;font-size:14.5px;line-height:1.5;border-radius:var(--r);white-space:pre-wrap;word-wrap:break-word}
-.bot .bubble{background:var(--blue-t);border:1px solid #d7e6e9;border-bottom-left-radius:4px;color:#1a3540}
-.user .bubble{background:var(--az-t);border:1px solid #f0dbae;border-bottom-right-radius:4px;color:#4a3a12}
+.bot .bubble{background:var(--blue-t);border:1px solid #d3e0b8;border-bottom-left-radius:4px;color:#243516}
+.user .bubble{background:var(--az-t);border:1px solid #d3e57e;border-bottom-right-radius:4px;color:#3a4a0c}
 .bubble img{max-width:160px;max-height:160px;border-radius:10px;display:block}
 .bubble a{color:var(--blue-d);font-weight:600}
 .dots span{display:inline-block;width:5px;height:5px;margin-right:3px;border-radius:50%;background:var(--blue);opacity:.35;animation:b 1.1s infinite}
@@ -35,7 +38,7 @@ select{margin-top:12px;width:100%;font:500 13.5px 'Work Sans',sans-serif;color:v
 textarea{flex:1;resize:none;max-height:120px;border:1px solid var(--line);border-radius:var(--r);padding:11px 14px;font:14.5px/1.4 'Work Sans',sans-serif;color:var(--ink);background:var(--paper)}
 textarea:focus{outline:none;border-color:var(--blue)}
 .send{border:none;border-radius:50%;width:42px;height:42px;flex-shrink:0;background:var(--blue);color:#fff;font-size:16px;cursor:pointer}
-.send:disabled{background:#c9c2ab;cursor:not-allowed}
+.send:disabled{background:#b9c3a0;cursor:not-allowed}
 .dz{border:2px dashed var(--line);border-radius:var(--r);padding:22px 16px;text-align:center;cursor:pointer;background:var(--paper)}
 .dz.over{border-color:var(--blue);background:var(--blue-t)}
 .dz b{display:block;font-size:14px;color:var(--blue-d)}
@@ -45,7 +48,7 @@ textarea:focus{outline:none;border-color:var(--blue)}
 <body>
 <div class="app">
   <header>
-    <h1>SargantANNA</h1>
+    <img class="logo" src="/fondo.png" alt="SargantAnna">
     <p class="tagline">Chatbot con IA para traducir entre valencià y español: texto, documentos e imágenes.</p>
     <select id="dir" aria-label="Dirección de la traducción">
       <option value="auto">Detectar idioma automáticamente</option>

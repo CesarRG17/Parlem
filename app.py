@@ -1,5 +1,5 @@
 """
-Parlem — backend de traducción con IA GRATUITA (valenciano <-> español)
+SargantAnna — backend de traducción con IA GRATUITA (valenciano <-> español)
 ==============================================================
 
 Motor: Gemini (API gratuita de Google AI Studio). Entiende contexto, registro
@@ -33,11 +33,11 @@ from xml.sax.saxutils import escape
 
 from google import genai
 from google.genai import types
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, send_from_directory
 from flask_cors import CORS
 
 logging.basicConfig(level=logging.INFO)
-log = logging.getLogger("parlem-backend")
+log = logging.getLogger("sargantanna-backend")
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20 MB por archivo
@@ -56,7 +56,7 @@ DIRECCIONES = {"auto", "val-spa", "spa-val"}
 # Prompts
 # ---------------------------------------------------------------------------
 BASE_RULES = """\
-Eres Parlem, un traductor experto entre VALENCIANO y ESPAÑOL (castellano).
+Eres SargantAnna, un traductor experto entre VALENCIANO y ESPAÑOL (castellano).
 - Escribe el valenciano según la normativa de l'Acadèmia Valenciana de la Llengua (AVL):
   formas valencianas (p. ej. "cantar", "xicotet", "huit", "este/eixe/aquell", "açò", "vosté"),
   no catalán central.
@@ -221,12 +221,21 @@ def home():
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
     if os.path.exists(path):
         return send_file(path)
-    return jsonify(status="ok", servicio="Parlem backend", aviso="No se encontró index.html")
+    return jsonify(status="ok", servicio="SargantAnna backend", aviso="No se encontró index.html")
+
+
+PUBLIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public")
+
+
+@app.route("/<path:filename>", methods=["GET"])
+def assets(filename):
+    """Sirve imágenes (logo, icono, fondo) desde la carpeta public/."""
+    return send_from_directory(PUBLIC_DIR, filename)
 
 
 @app.route("/salud", methods=["GET"])
 def healthcheck():
-    return jsonify(status="ok", servicio="Parlem backend", modelo=MODEL)
+    return jsonify(status="ok", servicio="SargantAnna backend", modelo=MODEL)
 
 
 # ---------------------------------------------------------------------------
