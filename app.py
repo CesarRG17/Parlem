@@ -48,7 +48,19 @@ _origins = os.environ.get("ALLOWED_ORIGINS", "*")
 CORS(app, origins="*" if _origins == "*" else [o.strip() for o in _origins.split(",")])
 
 MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")
-client = genai.Client()  # lee GEMINI_API_KEY del entorno
+_client = None
+
+
+def get_client():
+    """Crea el cliente de Gemini la primera vez que se necesita (no al arrancar),
+    para que la página cargue aunque falte la clave y el error sea legible."""
+    global _client
+    if _client is None:
+        key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+        if not key:
+            raise RuntimeError("Falta la variable GEMINI_API_KEY en el servidor.")
+        _client = genai.Client(api_key=key.strip().strip('"').strip("'"))
+    return _client
 
 DIRECCIONES = {"auto", "val-spa", "spa-val"}
 
@@ -138,7 +150,7 @@ def ask_ai(system, messages, max_tokens=None):
     for model in [MODEL] + [m for m in FALLBACK_MODELS if m != MODEL]:
         for attempt in range(3):
             try:
-                resp = client.models.generate_content(model=model, contents=contents, config=config)
+                resp = get_client().models.generate_content(model=model, contents=contents, config=config)
                 return (resp.text or "").strip()
             except Exception as e:
                 last_error = e
